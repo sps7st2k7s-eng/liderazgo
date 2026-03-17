@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0E0E0E">
+<title>Los 5 Niveles de Liderazgo</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8D08A;
+  --dark: #0E0E0E;
+  --dark2: #1A1A1A;
+  --dark3: #242424;
+  --dark4: #2E2E2E;
+  --white: #F5F2EB;
+  --muted: #888880;
+  --n1: #7A7A78; --n1b: #D3D1C7;
+  --n2: #3B80C4; --n2b: #B5D4F4;
+  --n3: #1A9070; --n3b: #9FE1CB;
+  --n4: #B87010; --n4b: #FAC775;
+  --n5: #5A4FC0; --n5b: #CECBF6;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html { height: 100%; }
+body {
+  height: 100%;
+  background: var(--dark);
+  font-family: 'Source Sans 3', sans-serif;
+  color: var(--white);
+  overflow: hidden;
+  touch-action: none;
+}
+
+/* ══ WRAPPER ══ */
+#deck {
+  position: relative;
+  width: 100%; height: 100%;
+  overflow: hidden;
+}
+
+/* ══ SLIDES ══ */
+.slide {
+  position: absolute; inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  transform: translateX(60px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(0);
+}
+.slide.out-left {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+
+/* ══ PORTADA ══ */
+#slide-0 {
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  padding: 40px 28px 100px;
+  gap: 0;
+  overflow: hidden;
+}
+.portada-line {
+  width: 48px; height: 2px;
+  background: var(--gold);
+  margin: 0 auto 28px;
+}
+.portada-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 10vw, 80px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -1px;
+  color: var(--white);
+}
+.portada-title span { color: var(--gold); }
+.portada-sub {
+  margin-top: 16px;
+  font-size: clamp(10px, 3vw, 14px);
+  font-weight: 300;
+  color: var(--muted);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 0 12px;
+}
+.portada-verse {
+  margin-top: 28px;
+  font-size: clamp(12px, 3.5vw, 15px);
+  font-style: italic;
+  color: var(--muted);
+  max-width: 380px;
+  line-height: 1.6;
+}
+.portada-niveles {
+  margin-top: 40px;
+  display: flex; flex-direction: column; gap: 10px;
+  width: 100%; max-width: 320px;
+}
+.portada-nivel-btn {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--dark3);
+  border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-align: left;
+}
+.portada-nivel-btn:active { background: var(--dark4); }
+.portada-nivel-dot {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 15px; font-weight: 700;
+  flex-shrink: 0;
+}
+.portada-nivel-info { flex: 1; }
+.portada-nivel-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px; font-weight: 700;
+}
+.portada-nivel-tag {
+  font-size: 11px; color: var(--muted); font-weight: 300; margin-top: 2px;
+}
+.portada-arrow { color: var(--muted); font-size: 12px; }
+
+/* ══ NIVEL SLIDE (MOBILE: columna) ══ */
+.nivel-page {
+  display: flex; flex-direction: column;
+  min-height: 100%;
+  padding-bottom: 90px;
+}
+
+.nivel-header-block {
+  padding: 48px 24px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.nivel-header-block::after {
+  content: '';
+  position: absolute; bottom: 0; left: 24px; right: 24px;
+  height: 0.5px;
+  background: rgba(255,255,255,0.08);
+}
+.nivel-badge {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 900;
+  margin-bottom: 16px;
+}
+.nivel-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 9vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.nivel-frase {
+  font-size: clamp(13px, 4vw, 16px);
+  font-weight: 300;
+  color: rgba(245,242,235,0.6);
+  line-height: 1.6;
+  border-left: 2px solid var(--gold);
+  padding-left: 12px;
+  margin-bottom: 16px;
+}
+.nivel-key {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 40px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.nivel-num-big {
+  position: absolute;
+  bottom: -10px; right: 10px;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(100px, 30vw, 160px);
+  font-weight: 900;
+  opacity: 0.04;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.nivel-content {
+  padding: 24px 20px;
+  display: flex; flex-direction: column;
+  gap: 14px;
+}
+
+.info-block {
+  background: var(--dark3);
+  border-radius: 14px;
+  padding: 18px 20px;
+  border: 0.5px solid rgba(255,255,255,0.08);
+}
+.info-block-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 8px;
+}
+.info-block-text {
+  font-size: clamp(14px, 4vw, 17px);
+  font-weight: 400; line-height: 1.6;
+  color: var(--white);
+}
+
+.verse-block {
+  background: var(--dark3);
+  border-radius: 14px;
+  padding: 18px 20px;
+  border: 0.5px solid rgba(255,255,255,0.08);
+}
+.verse-block-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 8px;
+}
+.verse-block-text {
+  font-size: clamp(13px, 3.8vw, 15px);
+  font-style: italic; line-height: 1.65;
+  color: rgba(245,242,235,0.75);
+}
+
+.ley-block {
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: clamp(12px, 3.5vw, 14px);
+  font-weight: 600; line-height: 1.5;
+  border: 0.5px solid rgba(201,168,76,0.3);
+  background: rgba(201,168,76,0.06);
+  color: var(--gold-light);
+}
+.warn-block {
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: clamp(12px, 3.5vw, 13px);
+  line-height: 1.5;
+  border: 0.5px solid rgba(255,180,0,0.2);
+  background: rgba(255,150,0,0.07);
+  color: #F0B060;
+}
+
+/* ══ RESUMEN ══ */
+#slide-6 {
+  display: flex; flex-direction: column;
+  padding: 40px 20px 100px;
+}
+.resumen-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(20px, 6vw, 32px);
+  font-weight: 700;
+  text-align: center;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+.resumen-grid { display: flex; flex-direction: column; gap: 10px; }
+.resumen-row {
+  background: var(--dark3);
+  border-radius: 12px;
+  padding: 14px 16px;
+  border: 0.5px solid rgba(255,255,255,0.07);
+  display: flex; align-items: center; gap: 12px;
+}
+.resumen-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700; font-size: 16px; flex-shrink: 0;
+}
+.resumen-body { flex: 1; min-width: 0; }
+.resumen-nivel {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(15px, 4.5vw, 20px);
+  font-weight: 700;
+}
+.resumen-frase {
+  font-size: clamp(11px, 3vw, 13px);
+  color: rgba(245,242,235,0.55);
+  font-weight: 300; margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.resumen-key {
+  font-size: clamp(10px, 2.8vw, 12px);
+  font-weight: 600; padding: 5px 10px;
+  border-radius: 30px; flex-shrink: 0; white-space: nowrap;
+}
+
+/* ══ NAV BAR ══ */
+.nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  background: rgba(14,14,14,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 0.5px solid rgba(255,255,255,0.08);
+  padding: 12px 20px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  z-index: 100;
+}
+.nav-btn {
+  background: rgba(255,255,255,0.06);
+  border: 0.5px solid rgba(255,255,255,0.15);
+  color: var(--white); border-radius: 50%;
+  width: 40px; height: 40px;
+  font-size: 15px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+  -webkit-user-select: none; user-select: none;
+}
+.nav-btn:active { background: rgba(255,255,255,0.18); }
+.nav-btn:disabled { opacity: 0.2; pointer-events: none; }
+.nav-center {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1;
+}
+.nav-dots { display: flex; gap: 5px; align-items: center; }
+.nav-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  cursor: pointer; transition: background 0.2s, transform 0.2s;
+}
+.nav-dot.active { background: var(--gold); transform: scale(1.5); }
+.nav-counter {
+  font-size: 11px; color: var(--muted); font-weight: 300;
+}
+
+/* ══ SWIPE HINT ══ */
+.swipe-hint {
+  position: fixed; bottom: 72px; left: 50%; transform: translateX(-50%);
+  font-size: 11px; color: rgba(255,255,255,0.2);
+  letter-spacing: 1px; white-space: nowrap;
+  pointer-events: none;
+  animation: fadeHint 3s forwards 1.5s;
+  opacity: 0;
+}
+@keyframes fadeHint {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  20%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ══ DESKTOP OVERRIDE ══ */
+@media (min-width: 700px) {
+  .nivel-page { flex-direction: row; min-height: 100vh; }
+  .nivel-header-block {
+    width: 300px; min-width: 300px; flex-shrink: 0;
+    padding: 60px 40px; min-height: 100vh;
+    background: var(--dark2);
+    border-right: 0.5px solid rgba(255,255,255,0.07);
+    justify-content: center; display: flex; flex-direction: column;
+  }
+  .nivel-header-block::after { display: none; }
+  .nivel-content {
+    flex: 1; padding: 60px 48px;
+    justify-content: center; display: flex; flex-direction: column;
+  }
+  #slide-6 { justify-content: center; align-items: center; min-height: 100vh; }
+  .resumen-grid { max-width: 800px; width: 100%; }
+  .resumen-frase { white-space: normal; }
+  .swipe-hint { display: none; }
+}
+</style>
+</head>
+<body>
+<div id="deck">
+
+<!-- ══ PORTADA ══ -->
+<div class="slide active" id="slide-0">
+  <div class="portada-line"></div>
+  <h1 class="portada-title">Los <span>5 Niveles</span><br>de Liderazgo</h1>
+  <p class="portada-sub">Por qué la gente sigue a los líderes</p>
+  <p class="portada-verse">"Y estableció a doce, para que estuviesen con él, y para enviarlos a predicar." — Marcos 3:14</p>
+  <div class="portada-niveles">
+    <div class="portada-nivel-btn" onclick="goTo(1)">
+      <div class="portada-nivel-dot" style="background:var(--n1b);color:var(--n1)">1</div>
+      <div class="portada-nivel-info">
+        <div class="portada-nivel-name" style="color:var(--n1b)">Posición</div>
+        <div class="portada-nivel-tag">Tiene que hacerlo</div>
+      </div>
+      <span class="portada-arrow">›</span>
+    </div>
+    <div class="portada-nivel-btn" onclick="goTo(2)">
+      <div class="portada-nivel-dot" style="background:var(--n2b);color:var(--n2)">2</div>
+      <div class="portada-nivel-info">
+        <div class="portada-nivel-name" style="color:var(--n2b)">Permiso</div>
+        <div class="portada-nivel-tag">Quiere hacerlo</div>
+      </div>
+      <span class="portada-arrow">›</span>
+    </div>
+    <div class="portada-nivel-btn" onclick="goTo(3)">
+      <div class="portada-nivel-dot" style="background:var(--n3b);color:var(--n3)">3</div>
+      <div class="portada-nivel-info">
+        <div class="portada-nivel-name" style="color:var(--n3b)">Producción</div>
+        <div class="portada-nivel-tag">Por lo que ha hecho</div>
+      </div>
+      <span class="portada-arrow">›</span>
+    </div>
+    <div class="portada-nivel-btn" onclick="goTo(4)">
+      <div class="portada-nivel-dot" style="background:var(--n4b);color:var(--n4)">4</div>
+      <div class="portada-nivel-info">
+        <div class="portada-nivel-name" style="color:var(--n4b)">Desarrollo</div>
+        <div class="portada-nivel-tag">Por lo que ha hecho en ellas</div>
+      </div>
+      <span class="portada-arrow">›</span>
+    </div>
+    <div class="portada-nivel-btn" onclick="goTo(5)">
+      <div class="portada-nivel-dot" style="background:var(--n5b);color:var(--n5)">5</div>
+      <div class="portada-nivel-info">
+        <div class="portada-nivel-name" style="color:var(--n5b)">Personaje</div>
+        <div class="portada-nivel-tag">Por quién es</div>
+      </div>
+      <span class="portada-arrow">›</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NIVEL 1 ══ -->
+<div class="slide" id="slide-1">
+  <div class="nivel-page">
+    <div class="nivel-header-block" style="background:var(--dark2)">
+      <div class="nivel-badge" style="background:var(--n1b);color:var(--n1)">1</div>
+      <div class="nivel-name">Posición</div>
+      <div class="nivel-frase">La gente lo sigue porque <strong>tiene que</strong> hacerlo</div>
+      <div class="nivel-key" style="background:rgba(122,122,120,0.18);color:var(--n1b)">Autoridad = Título</div>
+      <div class="nivel-num-big">1</div>
+    </div>
+    <div class="nivel-content">
+      <div class="info-block">
+        <div class="info-block-label">¿Qué lo mueve?</div>
+        <div class="info-block-text">Solo el cargo o título que tiene. Su influencia no va más allá de lo que el puesto le permite.</div>
+      </div>
+      <div class="verse-block">
+        <div class="verse-block-label">Ejemplo bíblico — Roboam (1 Reyes 12:7-8)</div>
+        <div class="verse-block-text">Cuando Salomón murió, Roboam tomó el trono. Ignoró el consejo de los ancianos y aumentó las cargas al pueblo. La gente lo seguía únicamente porque era el rey, no por relación. Al final, dividió la nación en dos reinos.</div>
+      </div>
+      <div class="warn-block">⚠ Entre más tiempo permanezca en este nivel sin superarse, mayor dificultad tendrá para avanzar y más bajará la moral de su equipo.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NIVEL 2 ══ -->
+<div class="slide" id="slide-2">
+  <div class="nivel-page">
+    <div class="nivel-header-block" style="background:var(--dark2)">
+      <div class="nivel-badge" style="background:var(--n2b);color:var(--n2)">2</div>
+      <div class="nivel-name">Permiso</div>
+      <div class="nivel-frase">La gente lo sigue porque <strong>quiere</strong> hacerlo</div>
+      <div class="nivel-key" style="background:rgba(59,128,196,0.18);color:var(--n2b)">Autoridad = Relaciones</div>
+      <div class="nivel-num-big">2</div>
+    </div>
+    <div class="nivel-content">
+      <div class="info-block">
+        <div class="info-block-label">¿Qué lo mueve?</div>
+        <div class="info-block-text">Ha construido confianza y credibilidad. La gente lo elige seguir por devoción, no por obligación. Su influencia va más allá de su autoridad asignada.</div>
+      </div>
+      <div class="verse-block">
+        <div class="verse-block-label">Ejemplo bíblico — Nehemías (Neh. 2:17-20)</div>
+        <div class="verse-block-text">"Vosotros veis el mal en que estamos... venid, y edifiquemos el muro." Nehemías tocó el corazón del pueblo antes de pedirle que trabajara. Conectó con ellos en múltiples niveles y se pusieron en acción.</div>
+      </div>
+      <div class="ley-block">📌 Ley de la Conexión: Los líderes tocan el corazón antes de pedir la mano.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NIVEL 3 ══ -->
+<div class="slide" id="slide-3">
+  <div class="nivel-page">
+    <div class="nivel-header-block" style="background:var(--dark2)">
+      <div class="nivel-badge" style="background:var(--n3b);color:var(--n3)">3</div>
+      <div class="nivel-name">Producción</div>
+      <div class="nivel-frase">La gente lo sigue por lo que <strong>ha hecho</strong></div>
+      <div class="nivel-key" style="background:rgba(26,144,112,0.18);color:var(--n3b)">Autoridad = Resultados</div>
+      <div class="nivel-num-big">3</div>
+    </div>
+    <div class="nivel-content">
+      <div class="info-block">
+        <div class="info-block-label">¿Qué lo mueve?</div>
+        <div class="info-block-text">Sus frutos son visibles. La gente no solo disfruta la relación — también disfruta los resultados. Les encanta ser parte de un equipo que gana.</div>
+      </div>
+      <div class="verse-block">
+        <div class="verse-block-label">Ejemplo bíblico — David (2 Sam. 5:1-2)</div>
+        <div class="verse-block-text">"Henos aquí, hueso tuyo y carne tuya somos. Tú eras quien sacabas a Israel a la guerra, y lo volvías a traer." Las tribus reconocieron a David por sus resultados, no solo por su unción. Lideró victorias antes de tener el título.</div>
+      </div>
+      <div class="ley-block">📌 Ley del Respeto: Las personas siguen de forma natural a un líder más fuerte que ellas mismas.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NIVEL 4 ══ -->
+<div class="slide" id="slide-4">
+  <div class="nivel-page">
+    <div class="nivel-header-block" style="background:var(--dark2)">
+      <div class="nivel-badge" style="background:var(--n4b);color:var(--n4)">4</div>
+      <div class="nivel-name">Desarrollo<br>de personas</div>
+      <div class="nivel-frase">La gente lo sigue por lo que <strong>ha hecho en ellas</strong></div>
+      <div class="nivel-key" style="background:rgba(184,112,16,0.18);color:var(--n4b)">Autoridad = Multiplicación</div>
+      <div class="nivel-num-big">4</div>
+    </div>
+    <div class="nivel-content">
+      <div class="info-block">
+        <div class="info-block-label">¿Qué lo mueve?</div>
+        <div class="info-block-text">Ha derramado su vida en otros. Desarrolla el potencial de personas clave. En este nivel el líder reproduce su vida — ocurre la multiplicación.</div>
+      </div>
+      <div class="verse-block">
+        <div class="verse-block-label">Ejemplo bíblico — Pablo (2 Tim. 2:2)</div>
+        <div class="verse-block-text">"Lo que has oído de mí... encárgalo a hombres fieles que sean idóneos para enseñar también a otros." Pablo invirtió en Timoteo, Tito, Lucas, Silas. No solo lideró seguidores — lideró líderes. La iglesia creció de forma explosiva.</div>
+      </div>
+      <div class="ley-block">📌 Ley del Crecimiento Explosivo: Para añadir crecimiento, lidera seguidores. Para multiplicar, lidera líderes.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ NIVEL 5 ══ -->
+<div class="slide" id="slide-5">
+  <div class="nivel-page">
+    <div class="nivel-header-block" style="background:var(--dark2)">
+      <div class="nivel-badge" style="background:var(--n5b);color:var(--n5)">5</div>
+      <div class="nivel-name">Personaje</div>
+      <div class="nivel-frase">La gente lo sigue por <strong>quién es</strong> y lo que representa</div>
+      <div class="nivel-key" style="background:rgba(90,79,192,0.18);color:var(--n5b)">Autoridad = Legado</div>
+      <div class="nivel-num-big">5</div>
+    </div>
+    <div class="nivel-content">
+      <div class="info-block">
+        <div class="info-block-label">¿Qué lo mueve?</div>
+        <div class="info-block-text">Años de integridad, servicio fiel y desarrollo consistente de personas. Su influencia trasciende cualquier organización. Pocos llegan a este nivel.</div>
+      </div>
+      <div class="verse-block">
+        <div class="verse-block-label">Ejemplo bíblico — Samuel (1 Sam. 3:19-20)</div>
+        <div class="verse-block-text">"Jehová estaba con él y no dejó caer a tierra ninguna de sus palabras. Y todo Israel, desde Dan hasta Beerseba, supo que Samuel era fiel profeta de Jehová." Su impacto fue tan grande que cuando murió, todo Israel se juntó para lamentarlo.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-block-label">Cualidades de Samuel en este escalón</div>
+        <div class="info-block-text">Fiel siervo del Señor · Vida vivida con integridad · Productor consistente de líderes a través de los años</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RESUMEN ══ -->
+<div class="slide" id="slide-6">
+  <p class="resumen-title">Resumen — Los 5 Niveles</p>
+  <div class="resumen-grid">
+    <div class="resumen-row">
+      <div class="resumen-num" style="background:var(--n1b);color:var(--n1)">1</div>
+      <div class="resumen-body">
+        <div class="resumen-nivel" style="color:var(--n1b)">Posición</div>
+        <div class="resumen-frase">La gente lo sigue porque tiene que hacerlo</div>
+      </div>
+      <div class="resumen-key" style="background:rgba(122,122,120,0.18);color:var(--n1b)">Título</div>
+    </div>
+    <div class="resumen-row">
+      <div class="resumen-num" style="background:var(--n2b);color:var(--n2)">2</div>
+      <div class="resumen-body">
+        <div class="resumen-nivel" style="color:var(--n2b)">Permiso</div>
+        <div class="resumen-frase">La gente lo sigue porque quiere hacerlo</div>
+      </div>
+      <div class="resumen-key" style="background:rgba(59,128,196,0.18);color:var(--n2b)">Relaciones</div>
+    </div>
+    <div class="resumen-row">
+      <div class="resumen-num" style="background:var(--n3b);color:var(--n3)">3</div>
+      <div class="resumen-body">
+        <div class="resumen-nivel" style="color:var(--n3b)">Producción</div>
+        <div class="resumen-frase">La gente lo sigue por lo que ha hecho</div>
+      </div>
+      <div class="resumen-key" style="background:rgba(26,144,112,0.18);color:var(--n3b)">Resultados</div>
+    </div>
+    <div class="resumen-row">
+      <div class="resumen-num" style="background:var(--n4b);color:var(--n4)">4</div>
+      <div class="resumen-body">
+        <div class="resumen-nivel" style="color:var(--n4b)">Desarrollo</div>
+        <div class="resumen-frase">La gente lo sigue por lo que ha hecho en ellas</div>
+      </div>
+      <div class="resumen-key" style="background:rgba(184,112,16,0.18);color:var(--n4b)">Multiplicación</div>
+    </div>
+    <div class="resumen-row">
+      <div class="resumen-num" style="background:var(--n5b);color:var(--n5)">5</div>
+      <div class="resumen-body">
+        <div class="resumen-nivel" style="color:var(--n5b)">Personaje</div>
+        <div class="resumen-frase">La gente lo sigue por quién es y lo que representa</div>
+      </div>
+      <div class="resumen-key" style="background:rgba(90,79,192,0.18);color:var(--n5b)">Legado</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- ══ NAV ══ -->
+<nav class="nav">
+  <button class="nav-btn" id="btn-prev" onclick="prev()" disabled>◀</button>
+  <div class="nav-center">
+    <div class="nav-dots" id="nav-dots"></div>
+    <span class="nav-counter" id="nav-counter">1 / 7</span>
+  </div>
+  <button class="nav-btn" id="btn-next" onclick="next()">▶</button>
+</nav>
+
+<div class="swipe-hint">← desliza para navegar →</div>
+
+<script>
+const TOTAL = 7;
+let current = 0;
+let animating = false;
+
+const dotsEl = document.getElementById('nav-dots');
+const counterEl = document.getElementById('nav-counter');
+const btnPrev = document.getElementById('btn-prev');
+const btnNext = document.getElementById('btn-next');
+
+for (let i = 0; i < TOTAL; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+}
+
+function goTo(n) {
+  if (animating || n === current) return;
+  if (n < 0 || n >= TOTAL) return;
+  animating = true;
+
+  const prev_slide = document.getElementById('slide-' + current);
+  const next_slide = document.getElementById('slide-' + n);
+
+  // scroll next to top
+  next_slide.scrollTop = 0;
+
+  // direction class
+  const goingRight = n > current;
+  next_slide.style.transform = goingRight ? 'translateX(60px)' : 'translateX(-60px)';
+  next_slide.style.opacity = '0';
+  next_slide.style.transition = 'none';
+  next_slide.style.pointerEvents = 'none';
+
+  current = n;
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      prev_slide.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+      prev_slide.style.transform = goingRight ? 'translateX(-60px)' : 'translateX(60px)';
+      prev_slide.style.opacity = '0';
+
+      next_slide.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+      next_slide.style.transform = 'translateX(0)';
+      next_slide.style.opacity = '1';
+
+      setTimeout(() => {
+        prev_slide.classList.remove('active');
+        prev_slide.style.transform = '';
+        prev_slide.style.opacity = '';
+        prev_slide.style.transition = '';
+        prev_slide.style.pointerEvents = '';
+
+        next_slide.classList.add('active');
+        next_slide.style.transform = '';
+        next_slide.style.opacity = '';
+        next_slide.style.transition = '';
+        next_slide.style.pointerEvents = '';
+        animating = false;
+      }, 380);
+    });
+  });
+
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  counterEl.textContent = (current + 1) + ' / ' + TOTAL;
+  btnPrev.disabled = current === 0;
+  btnNext.disabled = current === TOTAL - 1;
+}
+
+function next() { goTo(current + 1); }
+function prev() { goTo(current - 1); }
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   prev();
+});
+
+// Touch swipe
+let touchStartX = 0, touchStartY = 0, touchStartScrollTop = 0;
+const deck = document.getElementById('deck');
+
+deck.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+  const active = document.querySelector('.slide.active');
+  touchStartScrollTop = active ? active.scrollTop : 0;
+}, { passive: true });
+
+deck.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  const active = document.querySelector('.slide.active');
+  const scrolled = active ? Math.abs(active.scrollTop - touchStartScrollTop) : 0;
+
+  // only swipe if horizontal gesture dominates and page hasn't scrolled
+  if (Math.abs(dx) > Math.abs(dy) * 1.4 && Math.abs(dx) > 40 && scrolled < 10) {
+    if (dx < 0) next();
+    else prev();
+  }
+}, { passive: true });
+</script>
+</body>
+</html>
